@@ -1,4 +1,8 @@
-Business Rules
-==============
+Kata.ts
+=======
 
-Source: [http://codekata.com/kata/kata16-business-rules/](http://codekata.com/kata/kata16-business-rules/)
+Boilerplate for katas, with:
+
+- Node
+- Typescript
+- Jest
