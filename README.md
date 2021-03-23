@@ -1,11 +1,7 @@
-Kata.ts
-=======
+Business Rules
+==============
 
-Boilerplate for katas, with:
-
-- Node
-- Typescript
-- Jest
+Kata: [http://codekata.com/kata/kata16-business-rules/](http://codekata.com/kata/kata16-business-rules/)
 
 ## Installation
 
