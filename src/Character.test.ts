@@ -65,34 +65,37 @@ describe("A character", () => {
     expect(other.isAlive()).toBeFalsy();
   })
 
-  it("recovers health", () => {
-    const damage = 5;
-    const character = buildCharacterDamagedBy(damage);
+  it("heals other character", () => {
+    const character = new Character();
+    const damage = 50;
+    const other = buildCharacterDamagedBy(damage);
 
-    const health = 5;
-    character.recover(health)
+    const quantity = 10;
+    character.heal(quantity, other)
 
-    const totalHealth = INITIAL_HEALTH - damage + health;
-    expect(character.health()).toEqual(totalHealth);
+    const totalHealth = INITIAL_HEALTH - damage + quantity;
+    expect(other.health()).toEqual(totalHealth);
   })
 
-  it("cannot recover health above maximum", () => {
+  it("cannot heal a healthy character", () => {
     const character = new Character();
+    const other = new Character();
     const inflatedHealth = MAX_HEALTH + 100;
 
-    character.recover(inflatedHealth)
+    character.heal(inflatedHealth, other)
 
-    expect(character.health()).toEqual(MAX_HEALTH);
+    expect(other.health()).toEqual(MAX_HEALTH);
   })
 
-  it("cannot recover health after death", () => {
+  it("cannot heal a dead character", () => {
     const character = new Character();
-    character.die();
+    const other = new Character();
+    other.die();
 
-    character.recover(5)
+    character.heal(5, other)
 
-    expect(character.health()).toEqual(0);
-    expect(character.isAlive()).toBeFalsy();
+    expect(other.health()).toEqual(0);
+    expect(other.isAlive()).toBeFalsy();
   })
 
   const buildCharacterDamagedBy = (damage: number): Character => {
