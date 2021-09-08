@@ -65,37 +65,6 @@ describe("A character", () => {
     expect(other.isAlive()).toBeFalsy();
   })
 
-  it("receives damage", () => {
-    const damage = 5;
-    const character = new Character();
-    const previousHealth = character.health();
-
-    character.receive(damage);
-
-    const lessHealthy = previousHealth - damage;
-    expect(character.health()).toBe(lessHealthy);
-  })
-
-  it("dies when received damage exceeds current health", () => {
-    const character = new Character();
-    const damage = character.health() + 1;
-
-    character.receive(damage);
-
-    expect(character.health()).toEqual(0);
-    expect(character.isAlive()).toBeFalsy();
-  })
-
-  it("dies when received damage is exactly the current health", () => {
-    const character = new Character();
-    const damage = character.health();
-
-    character.receive(damage);
-
-    expect(character.health()).toEqual(0);
-    expect(character.isAlive()).toBeFalsy();
-  })
-
   it("recovers health", () => {
     const damage = 5;
     const character = buildCharacterDamagedBy(damage);
@@ -127,8 +96,9 @@ describe("A character", () => {
   })
 
   const buildCharacterDamagedBy = (damage: number): Character => {
+    const other = new Character();
     const character = new Character();
-    character.receive(damage);
+    other.deal(damage, character);
 
     return character;
   }

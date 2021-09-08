@@ -20,12 +20,6 @@ export class Character {
     characters.forEach((character) => character.receive(damage));
   }
 
-  public receive(damage: number): void {
-    if (damage > this.health()) return this.die();
-
-    this._health -= damage;
-  }
-
   public recover(health: number) {
     if (this.isDead()) return;
     if (this.health() + health >= MAX_HEALTH) return this.restore();
@@ -47,6 +41,12 @@ export class Character {
 
   public isAlive(): boolean {
     return this.health() > DIED;
+  }
+
+  private receive(damage: number): void {
+    if (damage > this.health()) return this.die();
+
+    this._health -= damage;
   }
 
   private isDead(): boolean {
