@@ -31,6 +31,40 @@ describe("A character", () => {
     expect(character.isAlive()).toBeFalsy()
   })
 
+  it("deals damage to other characters", () => {
+    const damage = 5;
+    const character = new Character();
+    const someCharacters = [new Character(), new Character()];
+
+    character.deal(damage, ...someCharacters);
+
+    someCharacters.forEach((character) => {
+      expect(character.health()).toBe(INITIAL_HEALTH - damage);
+    })
+  })
+
+  it("kills other characters when received damage exceeds current health", () => {
+    const character = new Character();
+    const other = new Character();
+    const damage = other.health() + 1;
+
+    character.deal(damage, other);
+
+    expect(other.health()).toEqual(0);
+    expect(other.isAlive()).toBeFalsy();
+  })
+
+  it("kills other characters when received damage is exactly the current health", () => {
+    const character = new Character();
+    const other = new Character();
+    const damage = other.health();
+
+    character.deal(damage, other);
+
+    expect(other.health()).toEqual(0);
+    expect(other.isAlive()).toBeFalsy();
+  })
+
   it("receives damage", () => {
     const damage = 5;
     const character = new Character();

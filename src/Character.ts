@@ -16,8 +16,12 @@ export class Character {
     this._level = level;
   }
 
+  public deal(damage: number, ...characters: Character[]): void {
+    characters.forEach((character) => character.receive(damage));
+  }
+
   public receive(damage: number): void {
-    if (damage >= this.health()) return this.die();
+    if (damage > this.health()) return this.die();
 
     this._health -= damage;
   }
