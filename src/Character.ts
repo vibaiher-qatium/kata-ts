@@ -1,4 +1,5 @@
 const DIED = 0;
+const MAX_HEALTH = 1000;
 const INITIAL_CONDITIONS = {
   health: 1000,
   level: 1
@@ -16,10 +17,16 @@ export class Character {
   }
 
   public receive(damage: number): void {
-    if (damage >= this.health())
-      return this.die();
+    if (damage >= this.health()) return this.die();
 
-    this._health = this.health() - damage;
+    this._health -= damage;
+  }
+
+  public recover(health: number) {
+    if (this.isDead()) return;
+    if (this.health() + health >= MAX_HEALTH) return this.restore();
+
+    this._health += health;
   }
 
   public die(): void {
@@ -35,6 +42,14 @@ export class Character {
   }
 
   public isAlive(): boolean {
-    return this._health > DIED;
+    return this.health() > DIED;
+  }
+
+  private isDead(): boolean {
+    return !this.isAlive();
+  }
+
+  private restore(): void {
+    this._health = MAX_HEALTH;
   }
 }

@@ -1,11 +1,13 @@
 import { Character } from "./Character";
 
+const INITIAL_HEALTH = 1000;
+const MAX_HEALTH = 1000;
+
 describe("A character", () => {
   it("borns healthy", () => {
     const character = new Character();
 
-    const initialHealth = 1000;
-    expect(character.health()).toEqual(initialHealth);
+    expect(character.health()).toEqual(INITIAL_HEALTH);
   })
 
   it("borns newbie", () => {
@@ -59,4 +61,41 @@ describe("A character", () => {
     expect(character.health()).toEqual(0);
     expect(character.isAlive()).toBeFalsy();
   })
+
+  it("recovers health", () => {
+    const damage = 5;
+    const character = buildCharacterDamagedBy(damage);
+
+    const health = 5;
+    character.recover(health)
+
+    const totalHealth = INITIAL_HEALTH - damage + health;
+    expect(character.health()).toEqual(totalHealth);
+  })
+
+  it("cannot recover health above maximum", () => {
+    const character = new Character();
+    const inflatedHealth = MAX_HEALTH + 100;
+
+    character.recover(inflatedHealth)
+
+    expect(character.health()).toEqual(MAX_HEALTH);
+  })
+
+  it("cannot recover health after death", () => {
+    const character = new Character();
+    character.die();
+
+    character.recover(5)
+
+    expect(character.health()).toEqual(0);
+    expect(character.isAlive()).toBeFalsy();
+  })
+
+  const buildCharacterDamagedBy = (damage: number): Character => {
+    const character = new Character();
+    character.receive(damage);
+
+    return character;
+  }
 })
