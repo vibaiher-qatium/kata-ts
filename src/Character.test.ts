@@ -43,7 +43,7 @@ describe("A character", () => {
     })
   })
 
-  it("kills other characters when received damage exceeds current health", () => {
+  it("kills other characters when damage exceeds health", () => {
     const character = new Character();
     const other = new Character();
     const damage = other.health() + 1;
@@ -54,7 +54,7 @@ describe("A character", () => {
     expect(other.isAlive()).toBeFalsy();
   })
 
-  it("kills other characters when received damage is exactly the current health", () => {
+  it("kills other characters when damage is exactly the current health", () => {
     const character = new Character();
     const other = new Character();
     const damage = other.health();
