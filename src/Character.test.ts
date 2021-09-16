@@ -98,6 +98,15 @@ describe("A character", () => {
     expect(other.isAlive()).toBeFalsy();
   })
 
+  it("cannot deal damage to itself", () => {
+    const damage = 5;
+    const character = new Character();
+
+    character.deal(damage, character);
+
+    expect(character.health()).toEqual(INITIAL_HEALTH);
+  })
+
   const buildCharacterDamagedBy = (damage: number): Character => {
     const other = new Character();
     const character = new Character();

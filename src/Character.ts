@@ -16,12 +16,18 @@ export class Character {
     this._level = level;
   }
 
-  public deal(damage: number, ...characters: Character[]): void {
-    characters.forEach((character) => character.receive(damage));
+  public deal(damage: number, ...targets: Character[]): void {
+    const itself = this;
+  
+    targets.forEach((target) => {
+      if (target == itself) return;
+
+      target.receive(damage)
+    });
   }
 
-  public heal(health: number, character: Character): void {
-    character.recover(health);
+  public heal(health: number, target: Character): void {
+    target.recover(health);
   }
 
   public die(): void {
