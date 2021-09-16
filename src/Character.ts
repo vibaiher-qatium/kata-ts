@@ -26,8 +26,11 @@ export class Character {
     });
   }
 
-  public heal(health: number, target: Character): void {
-    target.recover(health);
+  public heal(quantity: number): void {
+    if (this.isDead()) return;
+    if (this.health() + quantity >= MAX_HEALTH) return this.restore();
+
+    this.cure(quantity);
   }
 
   public die(): void {
@@ -52,15 +55,12 @@ export class Character {
     this._health -= damage;
   }
 
-  private recover(health: number) {
-    if (this.isDead()) return;
-    if (this.health() + health >= MAX_HEALTH) return this.restore();
-
-    this._health += health;
-  }
-
   private isDead(): boolean {
     return !this.isAlive();
+  }
+
+  private cure(quantity: number): void {
+    this._health += quantity;
   }
 
   private restore(): void {

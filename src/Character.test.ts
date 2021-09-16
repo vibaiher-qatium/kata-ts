@@ -65,44 +65,40 @@ describe("A character", () => {
     expect(other.isAlive()).toBeFalsy();
   })
 
-  it("heals other character", () => {
-    const character = new Character();
+  it("heals to itself", () => {
     const damage = 50;
-    const other = buildCharacterDamagedBy(damage);
+    const character = buildCharacterDamagedBy(damage);
 
     const quantity = 10;
-    character.heal(quantity, other)
+    character.heal(quantity)
 
     const totalHealth = INITIAL_HEALTH - damage + quantity;
-    expect(other.health()).toEqual(totalHealth);
+    expect(character.health()).toEqual(totalHealth);
   })
 
   it("cannot heal a healthy character", () => {
     const character = new Character();
-    const other = new Character();
     const inflatedHealth = MAX_HEALTH + 100;
 
-    character.heal(inflatedHealth, other)
+    character.heal(inflatedHealth)
 
-    expect(other.health()).toEqual(MAX_HEALTH);
+    expect(character.health()).toEqual(MAX_HEALTH);
   })
 
   it("cannot heal a dead character", () => {
     const character = new Character();
-    const other = new Character();
-    other.die();
+    character.die();
 
-    character.heal(5, other)
+    character.heal(5)
 
-    expect(other.health()).toEqual(0);
-    expect(other.isAlive()).toBeFalsy();
+    expect(character.health()).toEqual(0);
+    expect(character.isAlive()).toBeFalsy();
   })
 
   it("cannot deal damage to itself", () => {
-    const damage = 5;
     const character = new Character();
 
-    character.deal(damage, character);
+    character.deal(50, character);
 
     expect(character.health()).toEqual(INITIAL_HEALTH);
   })
