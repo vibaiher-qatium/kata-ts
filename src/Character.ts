@@ -17,10 +17,8 @@ export class Character {
   }
 
   public deal(damage: number, ...targets: Character[]): void {
-    const itself = this;
-  
     targets.forEach((target) => {
-      if (target == itself) return;
+      if (this.isItself(target)) return;
 
       target.receive(damage)
     });
@@ -57,6 +55,10 @@ export class Character {
 
   private isDead(): boolean {
     return !this.isAlive();
+  }
+
+  private isItself(character: Character): boolean {
+    return character === this;
   }
 
   private cure(quantity: number): void {
