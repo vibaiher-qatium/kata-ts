@@ -103,11 +103,44 @@ describe("A character", () => {
     expect(character.health()).toEqual(INITIAL_HEALTH);
   })
 
+  it("deals less damage to characters in other level range", () => {
+    const character = new Character();
+    const nextLevelRange = character.level() + 5;
+    const other = new PromotableCharacter();
+    other.promoteTo(nextLevelRange);
+    const damage = 20;
+  
+    character.deal(damage, other);
+
+    const reducedDamage = damage - (damage * 0.5);
+    const expectedHealth = INITIAL_HEALTH - reducedDamage;
+    expect(other.health()).toEqual(expectedHealth);
+  })
+
+  it("deals same damage to characters in same level range", () => {
+    const character = new Character();
+    const nextLevelRange = character.level() + 4;
+    const other = new PromotableCharacter();
+    other.promoteTo(nextLevelRange);
+    const damage = 20;
+  
+    character.deal(damage, other);
+
+    const expectedHealth = INITIAL_HEALTH - damage;
+    expect(other.health()).toEqual(expectedHealth);
+  })
+
   const buildCharacterDamagedBy = (damage: number): Character => {
     const other = new Character();
     const character = new Character();
     other.deal(damage, character);
 
     return character;
+  }
+
+  class PromotableCharacter extends Character {
+    public promoteTo(level: number) {
+      this._level = level;
+    }
   }
 })

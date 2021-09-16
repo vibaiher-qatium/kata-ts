@@ -1,13 +1,17 @@
+import { Damage } from "./Damage";
+
 const DIED = 0;
 const MAX_HEALTH = 1000;
 const INITIAL_CONDITIONS = {
   health: 1000,
   level: 1
 }
+const DAMAGE_REDUCTION_MULTIPLIER = 0.5;
+const HIGHER_RANK_THRESHOLD = 5;
 
 export class Character {
-  private _health: number;
-  private _level: number;
+  protected _health: number;
+  protected _level: number;
 
   constructor() {
     const { health, level } = INITIAL_CONDITIONS;
@@ -16,11 +20,14 @@ export class Character {
     this._level = level;
   }
 
-  public deal(damage: number, ...targets: Character[]): void {
+  public deal(damage: Damage, ...targets: Character[]): void {
     targets.forEach((target) => {
       if (this.isItself(target)) return;
 
-      target.receive(damage)
+      const modified = this.belongsToHigherRank(target)
+        ? this.reduced(damage)
+        : this.unmodified(damage);
+      target.receive(modified)
     });
   }
 
@@ -47,7 +54,7 @@ export class Character {
     return this.health() > DIED;
   }
 
-  private receive(damage: number): void {
+  private receive(damage: Damage): void {
     if (damage > this.health()) return this.die();
 
     this._health -= damage;
@@ -59,6 +66,18 @@ export class Character {
 
   private isItself(character: Character): boolean {
     return character === this;
+  }
+
+  private belongsToHigherRank(character: Character): boolean {
+    return character.level() - this.level() >= HIGHER_RANK_THRESHOLD;
+  }
+
+  private reduced(damage: Damage): Damage {
+    return damage - damage * DAMAGE_REDUCTION_MULTIPLIER;
+  }
+
+  private unmodified(damage: Damage): Damage {
+    return damage;
   }
 
   private cure(quantity: number): void {
